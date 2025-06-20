@@ -78,12 +78,12 @@ WSGI_APPLICATION = 'tiida.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': '127.0.0.1',
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '',
         'PORT': '3306',
-        'NAME': 'MnMs',
-        'USER': 'postgres',
-        'PASSWORD': '1'
+        'NAME': '$Pupsichek',
+        'USER': '',
+        'PASSWORD': ''
     }
 }
 
