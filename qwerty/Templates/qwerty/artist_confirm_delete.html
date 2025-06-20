@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление исполнителя{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">Удаление исполнителя</h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Вы уверены, что хотите удалить исполнителя "{{ object.name }}"?</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Удалить
+                            </button>
+                            <a href="{% url 'artist-list' %}" class="btn btn-secondary">
+                                <i class="bi bi-x-lg"></i> Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}<i class="bi bi-music-note-beamed"></i> Жанры{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4 fw-bold"><i class="bi bi-music-note-beamed"></i> Жанры <span class="music-wave"></span></h1>
+        <a href="{% url 'genre-create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Добавить жанр
+        </a>
+    </div>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if genres %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for genre in genres %}
+        <div class="col">
+            <div class="card h-100 genre-card position-relative">
+                <span class="cd-icon top-right"><i class="bi bi-music-note-beamed"></i></span>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">
+                            <span class="title-text">{{ genre.name }}</span>
+                        </h5>
+                    </div>
+                    <div class="btn-group w-100 position-relative" style="z-index:2;">
+                        <a href="{% url 'genre-detail' genre.pk %}" class="btn btn-outline-primary">
+                            <i class="bi bi-eye"></i> Просмотр
+                        </a>
+                        {% if user.profile.is_admin %}
+                        <a href="{% url 'genre-update' genre.pk %}" class="btn btn-outline-warning">
+                            <i class="bi bi-pencil"></i> Изменить
+                        </a>
+                        <a href="{% url 'genre-delete' genre.pk %}" class="btn btn-outline-danger">
+                            <i class="bi bi-trash"></i> Удалить
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        Жанры пока не добавлены
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .card {
+        position: relative;
+        z-index: 1;
+    }
+    .genre-link {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        text-decoration: none;
+        color: inherit;
+    }
+    .btn-group .btn {
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-group .btn:hover {
+        transform: translateY(-3px);
+    }
+    .col {
+        transition: all 0.3s ease-in-out;
+    }
+    .col:hover {
+        z-index: 2;
+    }
+    .title-text {
+        position: relative;
+        display: inline-block;
+    }
+    .title-text::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: var(--accent-color);
+        transition: width 0.3s ease-in-out;
+    }
+    .card:hover .title-text::after {
+        width: 100%;
+    }
+    .genre-card .btn-group { z-index: 2; }
+    .cd-icon {
+        position: absolute;
+        top: 14px;
+        right: 18px;
+        font-size: 1.6rem;
+        color: #000000;
+        z-index: 2;
+        pointer-events: none;
+        opacity: 0.18;
+        transition: transform 0.4s;
+    }
+    .cd-icon.top-right {
+        right: 18px;
+        left: auto;
+        top: 14px;
+    }
+    .genre-card:hover .cd-icon.top-right {
+        transform: scale(1.15) rotate(10deg);
+    }
+</style>
+{% endblock %} 

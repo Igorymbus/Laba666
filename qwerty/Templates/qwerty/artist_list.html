@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block title %}<i class="bi bi-vinyl"></i> Исполнители{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4 fw-bold"><i class="bi bi-vinyl"></i> Исполнители <span class="music-wave"></span></h1>
+        <a href="{% url 'artist-create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Добавить исполнителя
+        </a>
+    </div>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if artists %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for artist in artists %}
+        <div class="col">
+            <div class="card h-100 artist-card position-relative">
+                <span class="cd-icon"><i class="bi bi-vinyl"></i></span>
+                {% if artist.image %}
+                <img src="{{ artist.image.url }}" class="card-img-top album-cover" alt="{{ artist.name }}">
+                {% else %}
+                <div class="card-img-top album-cover-placeholder">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title mb-0">
+                            <span class="title-text">{{ artist.name }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-text mb-3">
+                        <div class="d-flex align-items-center info-item">
+                            <i class="bi bi-geo-alt text-primary me-2"></i>
+                            <span>{{ artist.country }}</span>
+                        </div>
+                    </div>
+                    <div class="btn-group w-100">
+                        <a href="{% url 'artist-detail' artist.pk %}" class="btn btn-outline-primary">
+                            <i class="bi bi-eye"></i> Просмотр
+                        </a>
+                        {% if user.profile.is_admin %}
+                        <a href="{% url 'artist-update' artist.pk %}" class="btn btn-outline-warning">
+                            <i class="bi bi-pencil"></i> Изменить
+                        </a>
+                        <a href="{% url 'artist-delete' artist.pk %}" class="btn btn-outline-danger">
+                            <i class="bi bi-trash"></i> Удалить
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        Исполнители пока не добавлены
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .cd-icon {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        font-size: 2.2rem;
+        color: #3498db33;
+        z-index: 2;
+        pointer-events: none;
+        transition: transform 0.4s;
+    }
+    .artist-card:hover .cd-icon {
+        transform: rotate(-30deg) scale(1.2);
+    }
+
+    .card {
+        position: relative;
+        z-index: 1;
+    }
+
+    .album-cover {
+        height: 300px;
+        object-fit: cover;
+        border-radius: 15px 15px 0 0;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .album-cover-placeholder {
+        height: 300px;
+        background: linear-gradient(45deg, #2c3e50, #3498db);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .album-cover-placeholder i {
+        font-size: 4rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .card:hover .album-cover {
+        transform: scale(1.05);
+    }
+
+    .title-text {
+        position: relative;
+        display: inline-block;
+    }
+
+    .title-text::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: var(--accent-color);
+        transition: width 0.3s ease-in-out;
+    }
+
+    .card:hover .title-text::after {
+        width: 100%;
+    }
+
+    .artist-icon {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card:hover .artist-icon {
+        transform: scale(1.2) rotate(5deg);
+    }
+
+    .info-item {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card:hover .info-item {
+        transform: translateX(5px);
+    }
+
+    .info-item i {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card:hover .info-item i {
+        transform: scale(1.2);
+    }
+
+    .btn-group .btn {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-group .btn:hover {
+        transform: translateY(-3px);
+    }
+
+    .col {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .col:hover {
+        z-index: 2;
+    }
+
+    @keyframes glow {
+        0% {
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        50% {
+            box-shadow: 0 8px 32px rgba(52, 152, 219, 0.3);
+        }
+        100% {
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+    }
+
+    .card:hover {
+        animation: glow 2s ease-in-out infinite;
+    }
+</style>
+{% endblock %} 

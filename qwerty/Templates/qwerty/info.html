@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}<i class="bi bi-disc"></i> Главная - Музыкальный магазин{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero секция -->
+    <div class="row align-items-center py-5">
+        <div class="col-md-6">
+            <h1 class="display-4 fw-bold">
+                <i class="bi bi-disc"></i> Добро пожаловать в наш музыкальный магазин <span class="music-wave"></span>
+            </h1>
+            <p class="lead">Откройте для себя мир качественной музыки с нашими виниловыми пластинками и CD-дисками</p>
+            <a href="{% url 'album-list' %}" class="btn btn-primary btn-lg">
+                <i class="bi bi-music-note-beamed"></i> Смотреть каталог
+            </a>
+        </div>
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                 class="img-fluid rounded shadow" alt="Музыкальный магазин">
+        </div>
+    </div>
+
+    <!-- Последние поступления -->
+    <section class="py-5">
+        <h2 class="text-center mb-4"><i class="bi bi-vinyl"></i> Последние поступления <span class="music-wave"></span></h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for album in albums %}
+            <div class="col">
+                <div class="card h-100 album-card position-relative">
+                    <span class="cd-icon"><i class="bi bi-disc"></i></span>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ album.title }}</h5>
+                        <p class="card-text">
+                            <strong>Жанр:</strong> {{ album.genre.name }}<br>
+                            <strong>Лейбл:</strong> {{ album.label.name }}<br>
+                            <strong>Цена:</strong> {{ album.price }} ₽
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Преимущества -->
+    <section class="py-5 bg-light">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="bi bi-music-note-beamed display-4 text-primary mb-3"></i>
+                    <h3>Широкий выбор</h3>
+                    <p>Более 1000 альбомов различных жанров и исполнителей</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="bi bi-disc display-4 text-primary mb-3"></i>
+                    <h3>Быстрая доставка</h3>
+                    <p>Доставляем по всей России в течение 3-5 дней</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="bi bi-vinyl display-4 text-primary mb-3"></i>
+                    <h3>Гарантия качества</h3>
+                    <p>Все пластинки проходят тщательную проверку</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section class="py-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2><i class="bi bi-music-note-beamed"></i> О нашем магазине</h2>
+                <p class="lead">Мы - команда энтузиастов, влюбленных в музыку и качественный звук.</p>
+                <p>Наш магазин предлагает широкий выбор виниловых пластинок и CD-дисков различных жанров. 
+                   Мы тщательно отбираем каждый альбом, чтобы предложить вам только лучшее.</p>
+                <a href="{% url 'album-list' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-vinyl"></i> Узнать больше
+                </a>
+            </div>
+            <div class="col-md-6">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                     class="img-fluid rounded shadow" alt="О магазине">
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    .cd-icon {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        font-size: 2.2rem;
+        color: #3498db33;
+        z-index: 2;
+        pointer-events: none;
+        transition: transform 0.4s;
+    }
+    .album-card:hover .cd-icon {
+        transform: rotate(30deg) scale(1.2);
+    }
+</style>
+
+<footer class="footer mt-auto w-100" style="padding-left:0;padding-right:0;background:#222;color:#fff;border-top:4px solid #3498db;padding:3rem 0;margin-top:4rem;">
+    <div class="row justify-content-center px-4 px-md-5">
+        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+            <h5 class="fw-bold mb-3"><i class="bi bi-music-note-beamed"></i> О нас</h5>
+            <p>Музыкальный магазин — это место, где вы найдёте лучшие CD-диски и винил по отличным ценам. Мы любим музыку и делаем всё, чтобы вы тоже её полюбили!</p>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+            <h5 class="fw-bold mb-3"><i class="bi bi-telephone"></i> Контакты</h5>
+            <ul class="list-unstyled mb-0">
+                <li><i class="bi bi-geo-alt"></i> г. Москва, ул. Примерная, 123</li>
+                <li><i class="bi bi-telephone"></i> <a href="tel:+79991234567" class="text-decoration-none text-light">+7 (999) 123-45-67</a></li>
+                <li><i class="bi bi-envelope"></i> <a href="mailto:info@musicstore.ru" class="text-decoration-none text-light">info@musicstore.ru</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-4 col-md-12">
+            <h5 class="fw-bold mb-3"><i class="bi bi-share"></i> Мы в соцсетях</h5>
+            <div class="social-links mb-2">
+                <a href="#" class="text-light me-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-light me-2"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-light me-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-light"><i class="bi bi-youtube"></i></a>
+            </div>
+            <small class="text-light">Подписывайтесь на нас, чтобы не пропустить новинки!</small>
+        </div>
+    </div>
+    <hr style="background:rgba(255,255,255,0.2);margin:2rem 0 1rem 0;">
+    <div class="text-center pb-2">
+        <p class="mb-0">&copy; 2024 Музыкальный магазин. Все права защищены.<br>Сайт не является публичной офертой. Вся информация носит справочный характер.</p>
+    </div>
+</footer>
+{% endblock %} 

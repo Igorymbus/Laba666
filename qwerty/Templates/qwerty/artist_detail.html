@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ artist.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row align-items-center">
+        <div class="col-md-4 mb-4 mb-md-0">
+            {% if artist.image %}
+            <div class="artist-image-container mb-3">
+                <img src="{{ artist.image.url }}" class="img-fluid rounded shadow artist-image" alt="{{ artist.name }}">
+            </div>
+            {% else %}
+            <div class="artist-image-placeholder mb-3">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold mb-3">{{ artist.name }}</h1>
+            <p class="lead mb-4"><i class="bi bi-geo-alt text-primary me-2"></i>{{ artist.country }}</p>
+            <div class="mb-4">
+                {% if user.profile.is_admin %}
+                <a href="{% url 'artist-update' artist.pk %}" class="btn btn-outline-warning me-2">
+                    <i class="bi bi-pencil"></i> Изменить
+                </a>
+                <a href="{% url 'artist-delete' artist.pk %}" class="btn btn-outline-danger">
+                    <i class="bi bi-trash"></i> Удалить
+                </a>
+                {% endif %}
+                <a href="{% url 'artist-list' %}" class="btn btn-secondary ms-2">
+                    <i class="bi bi-arrow-left"></i> Назад к списку
+                </a>
+            </div>
+            {% if albums %}
+            <h4 class="mb-3">Альбомы этого исполнителя:</h4>
+            <ul class="list-group list-group-flush">
+                {% for album in albums %}
+                <li class="list-group-item bg-transparent">
+                    <a href="{% url 'album-detail' album.pk %}">{{ album.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="alert alert-info mt-3">Нет альбомов у этого исполнителя.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.artist-image-container {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.9);
+}
+.artist-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.artist-image-placeholder {
+    background: linear-gradient(45deg, #2c3e50, #3498db);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    min-height: 220px;
+}
+.artist-image-placeholder i {
+    font-size: 5rem;
+    color: rgba(255,255,255,0.5);
+}
+</style>
+{% endblock %} 

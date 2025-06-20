@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ album.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            {% if album.cover_image %}
+            <div class="album-cover-container mb-4">
+                <img src="{{ album.cover_image.url }}" class="img-fluid rounded shadow album-cover" alt="{{ album.title }}">
+            </div>
+            {% else %}
+            <div class="album-cover-placeholder mb-4">
+                <i class="bi bi-music-note-beamed"></i>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h1 class="display-4 mb-4">{{ album.title }}</h1>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Информация об альбоме</h5>
+                    <dl class="row">
+                        <dt class="col-sm-3">Исполнители</dt>
+                        <dd class="col-sm-9">
+                            {% for artist in album.artists.all %}
+                                <a href="{% url 'artist-detail' artist.pk %}">{{ artist.name }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </dd>
+                        
+                        <dt class="col-sm-3">Жанр</dt>
+                        <dd class="col-sm-9">
+                            <a href="{% url 'genre-detail' album.genre.pk %}">{{ album.genre.name }}</a>
+                        </dd>
+                        
+                        <dt class="col-sm-3">Лейбл</dt>
+                        <dd class="col-sm-9">{{ album.label.name }}</dd>
+                        
+                        <dt class="col-sm-3">Дата выпуска</dt>
+                        <dd class="col-sm-9">{{ album.release_date|date:"d.m.Y" }}</dd>
+                        
+                        <dt class="col-sm-3">Цена</dt>
+                        <dd class="col-sm-9">{{ album.price }} ₽</dd>
+                    </dl>
+                </div>
+            </div>
+
+            {% if tracks %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Треки</h5>
+                    <div class="list-group">
+                        {% for track in tracks %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ track.title }}</h6>
+                                <small>{{ track.duration }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Действия</h5>
+                    <div class="d-grid gap-2">
+                        {% if user.profile.is_admin %}
+                        <a href="{% url 'album-update' album.pk %}" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Изменить
+                        </a>
+                        <a href="{% url 'album-delete' album.pk %}" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Удалить
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'album-list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Назад к списку
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .album-cover-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .album-cover-container:hover {
+        transform: scale(1.02);
+    }
+
+    .album-cover {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .album-cover-placeholder {
+        background: linear-gradient(45deg, #2c3e50, #3498db);
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+    .album-cover-placeholder i {
+        font-size: 5rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+
+    .list-group-item {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .list-group-item:hover {
+        background: rgba(52, 152, 219, 0.1);
+        transform: translateX(5px);
+    }
+
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+</style>
+{% endblock %} 
